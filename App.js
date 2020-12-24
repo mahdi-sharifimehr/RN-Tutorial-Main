@@ -7,17 +7,18 @@ import {
 } from 'react-native';
 
 const App = () => {
-  const [counter, setCounter] = useState(0);
+  const [name, setName] = useState('Style Test')
 
   const onClickHandler = () => {
-    setCounter(counter + 1)
+    setName('Style Test is Done!')
   }
 
   return (
     <View style={styles.body}>
-      <Text style={styles.text}>{counter * 5}</Text>
-      <Button title='Add' onPress={onClickHandler}></Button>
-      <Text style={styles.text}>You clicked {counter} times</Text>
+      <Text style={styles.text}>{name}</Text>
+      <View style={styles.button}>
+        <Button title='Update State' onPress={onClickHandler}></Button>
+      </View>
     </View>
   );
 };
@@ -25,16 +26,24 @@ const App = () => {
 const styles = StyleSheet.create({
   body: {
     flex: 1,
-    backgroundColor: '#0000ff',
+    backgroundColor: '#ffff00',
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 10,
+    borderColor: '#ff00ff',
+    borderRadius: 10,
   },
   text: {
-    color: '#ffffff',
-    fontSize: 20,
+    color: '#000000',
+    fontSize: 35,
     fontStyle: 'italic',
     margin: 10,
+    textTransform: 'uppercase'
   },
+  button: {
+    width: 200,
+    height: 60,
+  }
 });
 
 export default App;
