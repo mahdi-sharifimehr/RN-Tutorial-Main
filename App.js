@@ -7,17 +7,17 @@ import {
 } from 'react-native';
 
 const App = () => {
-  const [name, setName] = useState('Style Test')
-
-  const onClickHandler = () => {
-    setName('Style Test is Done!')
-  }
 
   return (
     <View style={styles.body}>
-      <Text style={styles.text}>{name}</Text>
-      <View style={styles.button}>
-        <Button title='Update State' onPress={onClickHandler}></Button>
+      <View style={styles.view1}>
+        <Text style={styles.text}>1</Text>
+      </View>
+      <View style={styles.view2}>
+        <Text style={styles.text}>2</Text>
+      </View>
+      <View style={styles.view3}>
+        <Text style={styles.text}>3</Text>
       </View>
     </View>
   );
@@ -26,24 +26,35 @@ const App = () => {
 const styles = StyleSheet.create({
   body: {
     flex: 1,
+    flexDirection: 'column',
+    backgroundColor: '#0000ff',
+    alignItems: 'stretch',
+    justifyContent: 'center',
+  },
+  view1: {
+    flex: 1,
+    backgroundColor: '#00ffff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  view2: {
+    flex: 1,
+    backgroundColor: '#ff00ff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  view3: {
+    flex: 1,
     backgroundColor: '#ffff00',
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 10,
-    borderColor: '#ff00ff',
-    borderRadius: 10,
   },
   text: {
     color: '#000000',
     fontSize: 35,
     fontStyle: 'italic',
     margin: 10,
-    textTransform: 'uppercase'
   },
-  button: {
-    width: 200,
-    height: 60,
-  }
 });
 
 export default App;
