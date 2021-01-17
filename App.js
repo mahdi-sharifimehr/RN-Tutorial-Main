@@ -3,83 +3,48 @@ import {
   StyleSheet,
   View,
   Text,
-  ScrollView,
-  RefreshControl,
-  FlatList,
-  SectionList,
+  TextInput,
 } from 'react-native';
 
 const App = () => {
 
-  const [Sections, setSections] = useState([
-    {
-      title: 'Title 1',
-      data: ['Item 1-1', 'Item 1-2'],
-    },
-  ]);
-  const onRefresh = () => {
-    setRefreshing(true);
-    const adding_index = Sections.length + 1;
-    setSections([...Sections,
-    {
-      title: 'Title ' + adding_index,
-      data:
-        [
-          'Item ' + adding_index + '-1',
-          'Item ' + adding_index + '-2'
-        ],
-    }
-    ]);
-    setRefreshing(false);
-  }
-  const [Refreshing, setRefreshing] = useState(false);
+  const [name, SetName] = useState('');
 
   return (
-    <SectionList
-      keyExtractor={(item, index) => index.toString()}
-      sections={Sections}
-      renderItem={({ item }) => (
-        <View style={styles.item}>
-          <Text style={styles.text_item}>{item}</Text>
-        </View >
-      )}
-      renderSectionHeader={({ section }) => (
-        <View style={styles.header}>
-          <Text style={styles.text_header}>{section.title}</Text>
-        </View>
-      )}
-      refreshControl={
-        < RefreshControl
-          refreshing={Refreshing}
-          onRefresh={onRefresh}
-        />
-      }
-    />
+    <View style={styles.body}>
+      <Text style={styles.text}>
+        Please write your name:
+      </Text>
+      <TextInput
+        style={styles.input}
+        placeholder='e.g. John'
+        onChangeText={(value) => SetName(value)}
+      />
+      <Text style={styles.text}>
+        Your name is: {name}
+      </Text>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  header: {
-    backgroundColor: '#4ae1fa',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2,
-  },
-  item: {
-    borderBottomWidth: 1,
-    justifyContent: 'center',
+  body: {
+    flex: 1,
+    backgroundColor: '#ffffff',
     alignItems: 'center',
   },
-  text_header: {
+  text: {
     color: '#000000',
-    fontSize: 45,
-    fontStyle: 'italic',
+    fontSize: 20,
     margin: 10,
   },
-  text_item: {
-    color: '#000000',
-    fontSize: 35,
-    margin: 5,
+  input: {
+    width: 200,
+    borderWidth: 1,
+    borderColor: '#555',
+    borderRadius: 5,
+    textAlign: 'center',
+    fontSize: 20,
   },
 });
 
