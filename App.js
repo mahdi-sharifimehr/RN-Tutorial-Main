@@ -4,11 +4,9 @@ import {
   View,
   Text,
   TextInput,
-  Button,
-  TouchableOpacity,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
   Pressable,
+  Alert,
+  ToastAndroid,
 } from 'react-native';
 
 const App = () => {
@@ -16,7 +14,35 @@ const App = () => {
   const [name, SetName] = useState('');
   const [submitted, SetSubmitted] = useState(false);
   const onPressHandler = () => {
-    SetSubmitted(!submitted);
+    if (name.length > 3) {
+      SetSubmitted(!submitted);
+    } else {
+      // Alert.alert(
+      //   'Warning',
+      //   'The name must be longer than 3 characters', [
+      //   {
+      //     text: 'Do not show again',
+      //     onPress: () => console.warn('Do not show Pressed!')
+      //   },
+      //   {
+      //     text: 'Cancel',
+      //     onPress: () => console.warn('Cancel Pressed!')
+      //   },
+      //   {
+      //     text: 'OK',
+      //     onPress: () => console.warn('OK Pressed!')
+      //   },
+      // ],
+      //   {
+      //     cancelable: true,
+      //     onDismiss: () => console.warn('Alert dismissed!')
+      //   })
+      ToastAndroid.showWithGravity(
+        'The name must be longer than 3 characters',
+        ToastAndroid.LONG,
+        ToastAndroid.CENTER,
+      )
+    }
   }
 
   return (
@@ -29,24 +55,10 @@ const App = () => {
         placeholder='e.g. John'
         onChangeText={(value) => SetName(value)}
       />
-      {/* <Button
-        title={submitted ? 'Clear' : 'Submit'}
-        onPress={onPressHandler}
-        color='#00f'
-      /> */}
-      {/* <TouchableWithoutFeedback
-        onPress={onPressHandler}
-      >
-        <View style={styles.button}>
-          <Text style={styles.text}>
-            {submitted ? 'Clear' : 'Submit'}
-          </Text>
-        </View>
-      </TouchableWithoutFeedback> */}
       <Pressable
         onPress={onPressHandler}
         hitSlop={{ top: 10, bottom: 10, right: 10, left: 10 }}
-        android_ripple={{color:'#00f'}}
+        android_ripple={{ color: '#00f' }}
         style={({ pressed }) => [
           { backgroundColor: pressed ? '#dddddd' : '#00ff00' },
           styles.button
