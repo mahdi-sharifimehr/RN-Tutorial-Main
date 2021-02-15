@@ -8,6 +8,8 @@ import {
   Alert,
   ToastAndroid,
   Modal,
+  Image,
+  ImageBackground,
 } from 'react-native';
 
 const App = () => {
@@ -24,7 +26,10 @@ const App = () => {
   }
 
   return (
-    <View style={styles.body}>
+    <ImageBackground
+      style={styles.body}
+      source={{ uri: 'https://cdn.pixabay.com/photo/2013/07/12/12/35/texture-145968_960_720.png' }}
+    >
       <Modal
         visible={showWarning}
         transparent
@@ -45,7 +50,7 @@ const App = () => {
             <Pressable
               onPress={() => SetshowWarning(false)}
               style={styles.warning_button}
-              android_ripple={{color:'#fff'}}
+              android_ripple={{ color: '#fff' }}
             >
               <Text style={styles.text}>OK</Text>
             </Pressable>
@@ -75,20 +80,30 @@ const App = () => {
       </Pressable>
       {
         submitted ?
-          <Text style={styles.text}>
-            You are registered as {name}
-          </Text>
+          <View style={styles.body}>
+            <Text style={styles.text}>
+              You are registered as {name}
+            </Text>
+            <Image
+              style={styles.image}
+              source={require('./assets/done.png')}
+              resizeMode='stretch'
+            />
+          </View>
           :
-          null
+          <Image
+            style={styles.image}
+            source={{ uri: 'https://cdn.pixabay.com/photo/2018/01/04/15/51/404-error-3060993_960_720.png' }}
+            resizeMode='stretch'
+          />
       }
-    </View >
+    </ImageBackground >
   );
 };
 
 const styles = StyleSheet.create({
   body: {
     flex: 1,
-    backgroundColor: '#ffffff',
     alignItems: 'center',
   },
   text: {
@@ -138,10 +153,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  warning_button:{
-    backgroundColor:'#00ffff',
-    borderBottomLeftRadius:20,
-    borderBottomRightRadius:20,
+  warning_button: {
+    backgroundColor: '#00ffff',
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+  },
+  image: {
+    width: 100,
+    height: 100,
+    margin: 10,
   }
 });
 
