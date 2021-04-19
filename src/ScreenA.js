@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 40,
-        fontWeight: 'bold',
         margin: 10,
+        fontFamily: 'IndieFlower-Regular'
     }
 })
