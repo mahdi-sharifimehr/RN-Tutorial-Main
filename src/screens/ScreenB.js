@@ -5,6 +5,7 @@ import {
     Text,
     Pressable,
 } from 'react-native';
+import GlobalStyle from '../utils/GlobalStyle';
 
 export default function ScreenB({ navigation, route }) {
 
@@ -18,14 +19,17 @@ export default function ScreenB({ navigation, route }) {
 
     return (
         <View style={styles.body}>
-            <Text style={styles.text}>
+            <Text style={[
+                GlobalStyle.CustomFont,
+                styles.text
+            ]}>
                 Screen B
         </Text>
             <Pressable
                 onPress={onPressHandler}
                 style={({ pressed }) => ({ backgroundColor: pressed ? '#ddd' : '#0f0' })}
             >
-                <Text style={styles.text}>
+                <Text style={GlobalStyle.ButtonText}>
                     Go Back to Screen A
           </Text>
             </Pressable>
@@ -43,7 +47,6 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 40,
-        fontWeight: 'bold',
         margin: 10,
     }
 })

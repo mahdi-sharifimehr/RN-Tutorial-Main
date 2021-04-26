@@ -5,6 +5,7 @@ import {
     Text,
     Pressable,
 } from 'react-native';
+import GlobalStyle from '../utils/GlobalStyle';
 
 export default function ScreenA({ navigation, route }) {
 
@@ -35,15 +36,19 @@ export default function ScreenA({ navigation, route }) {
 
     return (
         <View style={styles.body}>
-            <Text style={styles.text}>
+            <Text style={[
+                GlobalStyle.CustomFont,
+                styles.text
+            ]}>
                 Screen A
-        </Text>
+            </Text>
             <Pressable
                 onPress={onPressHandler}
-                style={({ pressed }) => ({ 
-                    backgroundColor: pressed ? '#ddd' : '#0f0' })}
+                style={({ pressed }) => ({
+                    backgroundColor: pressed ? '#ddd' : '#0f0'
+                })}
             >
-                <Text style={styles.text}>
+                <Text style={GlobalStyle.ButtonText}>
                     Get the last user
           </Text>
             </Pressable>
@@ -61,6 +66,5 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 40,
         margin: 10,
-        fontFamily: 'IndieFlower-Regular'
     }
 })
