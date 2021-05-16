@@ -1,31 +1,18 @@
 
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import ScreenA from './screens/ScreenA';
-import ScreenB from './screens/ScreenB';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { createStackNavigator } from '@react-navigation/stack';
+import Home from './screens/Home';
+import Login from './screens/Login';
 
-const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
 
 function App() {
   return (
     <NavigationContainer>
-      <Drawer.Navigator
-        initialRouteName="Screen_A"
-        drawerPosition='left'
-        drawerType="front"
-        edgeWidth={100}
-        hideStatusBar={false}
-        overlayColor='#00000090'
-        drawerStyle={{
-          backgroundColor: '#e6e6e6',
-          width: 250
-        }}
+      <Stack.Navigator
+        initialRouteName="Login"
         screenOptions={{
-          headerShown: true,
-          swipeEnabled: true,
-          gestureEnabled: true,
           headerTitleAlign: 'center',
           headerStyle: {
             backgroundColor: '#0080ff'
@@ -37,36 +24,18 @@ function App() {
           }
         }}
       >
-        <Drawer.Screen
-          name="Screen_A"
-          component={ScreenA}
+        <Stack.Screen
+          name="Login"
+          component={Login}
           options={{
-            title: 'Screen_A Title',
-            drawerIcon: ({ focused }) => (
-              <FontAwesome5
-                name="autoprefixer"
-                size={focused ? 25 : 20}
-                color={focused ? '#0080ff' : '#999999'}
-              />
-            )
+            headerShown: false,
           }}
         />
-        <Drawer.Screen
-          name="Screen_B"
-          component={ScreenB}
-          options={{
-            title: 'Screen_B Title',
-            drawerIcon: ({ focused }) => (
-              <FontAwesome5
-                name="btc"
-                size={focused ? 25 : 20}
-                color={focused ? '#0080ff' : '#999999'}
-              />
-            )
-          }}
-          initialParams={{ ItemName: 'Item from Drawer', ItemId: 12 }}
+        <Stack.Screen
+          name="Home"
+          component={Home}
         />
-      </Drawer.Navigator>
+      </Stack.Navigator>
     </NavigationContainer>
   )
 }
