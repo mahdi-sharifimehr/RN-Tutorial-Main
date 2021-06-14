@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
     View,
     StyleSheet,
-    Image,
     Text,
     TextInput,
     Alert,
 } from 'react-native';
 import CustomButton from '../utils/CustomButton';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
 import SQLite from 'react-native-sqlite-storage';
 import { useSelector, useDispatch } from 'react-redux';
 import { setName, setAge } from '../redux/actions';
+import PushNotification from "react-native-push-notification";
 
 const db = SQLite.openDatabase(
     {
@@ -27,12 +26,10 @@ export default function Login({ navigation }) {
     const { name, age } = useSelector(state => state.userReducer);
     const dispatch = useDispatch();
 
-    // const [name, setName] = useState('');
-    // const [age, setAge] = useState('');
-
     useEffect(() => {
         createTable();
         getData();
+        createChannels();
     }, []);
 
     const createTable = () => {
@@ -45,14 +42,17 @@ export default function Login({ navigation }) {
         })
     }
 
+    const createChannels = () => {
+        PushNotification.createChannel(
+            {
+                channelId: "test-channel",
+                channelName: "Test Channel"
+            }
+        )
+    }
+
     const getData = () => {
         try {
-            // AsyncStorage.getItem('UserData')
-            //     .then(value => {
-            //         if (value != null) {
-            //             navigation.navigate('Home');
-            //         }
-            //     })
             db.transaction((tx) => {
                 tx.executeSql(
                     "SELECT Name, Age FROM Users",
@@ -77,15 +77,7 @@ export default function Login({ navigation }) {
             try {
                 dispatch(setName(name));
                 dispatch(setAge(age));
-                // var user = {
-                //     Name: name,
-                //     Age: age
-                // }
-                // await AsyncStorage.setItem('UserData', JSON.stringify(user));
                 await db.transaction(async (tx) => {
-                    // await tx.executeSql(
-                    //     "INSERT INTO Users (Name, Age) VALUES ('" + name + "'," + age + ")"
-                    // );
                     await tx.executeSql(
                         "INSERT INTO Users (Name, Age) VALUES (?,?)",
                         [name, age]
@@ -100,12 +92,7 @@ export default function Login({ navigation }) {
 
     return (
         <View style={styles.body} >
-            {/* <Image
-                style={styles.logo}
-                source={require('../../assets/redux.png')}
-            /> */}
             <Text style={styles.text}>
-                Redux
             </Text>
             <TextInput
                 style={styles.input}

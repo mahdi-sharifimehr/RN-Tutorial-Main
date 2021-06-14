@@ -1,18 +1,16 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
     StyleSheet,
     View,
     Text,
-    Alert,
-    TextInput,
     FlatList,
+    TouchableOpacity,
 } from 'react-native';
-import CustomButton from '../utils/CustomButton';
 import GlobalStyle from '../utils/GlobalStyle';
 import SQLite from 'react-native-sqlite-storage';
 import { useSelector, useDispatch } from 'react-redux';
-import { setName, setAge, increaseAge, getCities } from '../redux/actions';
+import { setName, setAge, getCities } from '../redux/actions';
+import PushNotification from "react-native-push-notification";
 
 const db = SQLite.openDatabase(
     {
@@ -23,13 +21,10 @@ const db = SQLite.openDatabase(
     error => { console.log(error) }
 );
 
-export default function Home({ navigation, route }) {
+export default function Home() {
 
     const { name, age, cities } = useSelector(state => state.userReducer);
     const dispatch = useDispatch();
-
-    // const [name, setName] = useState('');
-    // const [age, setAge] = useState('');
 
     useEffect(() => {
         getData();
@@ -38,14 +33,6 @@ export default function Home({ navigation, route }) {
 
     const getData = () => {
         try {
-            // AsyncStorage.getItem('UserData')
-            //     .then(value => {
-            //         if (value != null) {
-            //             let user = JSON.parse(value);
-            //             setName(user.Name);
-            //             setAge(user.Age);
-            //         }
-            //     })
             db.transaction((tx) => {
                 tx.executeSql(
                     "SELECT Name, Age FROM Users",
@@ -66,43 +53,26 @@ export default function Home({ navigation, route }) {
         }
     }
 
-    const updateData = async () => {
-        if (name.length == 0) {
-            Alert.alert('Warning!', 'Please write your data.')
-        } else {
-            try {
-                // var user = {
-                //     Name: name
-                // }
-                // await AsyncStorage.mergeItem('UserData', JSON.stringify(user));
-                db.transaction((tx) => {
-                    tx.executeSql(
-                        "UPDATE Users SET Name=?",
-                        [name],
-                        () => { Alert.alert('Success!', 'Your data has been updated.') },
-                        error => { console.log(error) }
-                    )
-                })
-            } catch (error) {
-                console.log(error);
-            }
-        }
-    }
+    const handleNotification = (item, index) => {
 
-    const removeData = async () => {
-        try {
-            // await AsyncStorage.clear();
-            db.transaction((tx) => {
-                tx.executeSql(
-                    "DELETE FROM Users",
-                    [],
-                    () => { navigation.navigate('Login') },
-                    error => { console.log(error) }
-                )
-            })
-        } catch (error) {
-            console.log(error);
-        }
+        PushNotification.cancelAllLocalNotifications();
+
+        PushNotification.localNotification({
+            channelId: "test-channel",
+            title: "You clicked on " + item.country,
+            message: item.city,
+            bigText: item.city + " is one of the largest and most beatiful cities in " + item.country,
+            color: "red",
+            id: index
+        });
+
+        PushNotification.localNotificationSchedule({
+            channelId: "test-channel",
+            title: "Alarm",
+            message: "You clicked on " + item.country + " 20 seconds ago",
+            date: new Date(Date.now() + 20 * 1000),
+            allowWhileIdle: true,
+        });
     }
 
     return (
@@ -115,41 +85,18 @@ export default function Home({ navigation, route }) {
             </Text>
             <FlatList
                 data={cities}
-                renderItem={({ item }) => (
-                    <View style={styles.item}>
-                        <Text style={styles.title}>{item.country}</Text>
-                        <Text style={styles.subtitle}>{item.city}</Text>
-                    </View>
+                renderItem={({ item, index }) => (
+                    <TouchableOpacity
+                        onPress={() => { handleNotification(item, index) }}
+                    >
+                        <View style={styles.item}>
+                            <Text style={styles.title}>{item.country}</Text>
+                            <Text style={styles.subtitle}>{item.city}</Text>
+                        </View>
+                    </TouchableOpacity>
                 )}
                 keyExtractor={(item, index) => index.toString()}
             />
-            {/* <Text style={[
-                GlobalStyle.CustomFont,
-                styles.text
-            ]}>
-                Your age is {age}
-            </Text>
-            <TextInput
-                style={styles.input}
-                placeholder='Enter your name'
-                value={name}
-                onChangeText={(value) => dispatch(setName(value))}
-            />
-            <CustomButton
-                title='Update'
-                color='#ff7f00'
-                onPressFunction={updateData}
-            />
-            <CustomButton
-                title='Remove'
-                color='#f40100'
-                onPressFunction={removeData}
-            />
-            <CustomButton
-                title='Increase Age'
-                color='#0080ff'
-                onPressFunction={()=>{dispatch(increaseAge())}}
-            /> */}
         </View>
     )
 }
