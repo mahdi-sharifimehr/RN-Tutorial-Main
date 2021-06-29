@@ -21,7 +21,7 @@ const db = SQLite.openDatabase(
     error => { console.log(error) }
 );
 
-export default function Home() {
+export default function Home({ navigation }) {
 
     const { name, age, cities } = useSelector(state => state.userReducer);
     const dispatch = useDispatch();
@@ -66,13 +66,13 @@ export default function Home() {
             id: index
         });
 
-        PushNotification.localNotificationSchedule({
-            channelId: "test-channel",
-            title: "Alarm",
-            message: "You clicked on " + item.country + " 20 seconds ago",
-            date: new Date(Date.now() + 20 * 1000),
-            allowWhileIdle: true,
-        });
+        // PushNotification.localNotificationSchedule({
+        //     channelId: "test-channel",
+        //     title: "Alarm",
+        //     message: "You clicked on " + item.country + " 20 seconds ago",
+        //     date: new Date(Date.now() + 20 * 1000),
+        //     allowWhileIdle: true,
+        // });
     }
 
     return (
@@ -87,7 +87,14 @@ export default function Home() {
                 data={cities}
                 renderItem={({ item, index }) => (
                     <TouchableOpacity
-                        onPress={() => { handleNotification(item, index) }}
+                        onPress={() => {
+                            handleNotification(item, index);
+                            navigation.navigate('Map', {
+                                city: item.city,
+                                lat: item.lat,
+                                lng: item.lng,
+                            });
+                        }}
                     >
                         <View style={styles.item}>
                             <Text style={styles.title}>{item.country}</Text>
