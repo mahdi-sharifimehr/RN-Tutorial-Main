@@ -11,6 +11,7 @@ import SQLite from 'react-native-sqlite-storage';
 import { useSelector, useDispatch } from 'react-redux';
 import { setName, setAge, getCities } from '../redux/actions';
 import PushNotification from "react-native-push-notification";
+import CustomButton from '../utils/CustomButton';
 
 const db = SQLite.openDatabase(
     {
@@ -83,6 +84,11 @@ export default function Home({ navigation }) {
             ]}>
                 Welcome {name} !
             </Text>
+            <CustomButton
+                title="Open Camera"
+                color='#0080ff'
+                onPressFunction={() => { navigation.navigate('Camera') }}
+            />
             <FlatList
                 data={cities}
                 renderItem={({ item, index }) => (
