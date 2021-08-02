@@ -86,6 +86,10 @@ function App() {
             name="Task"
             component={Task}
           />
+          <RootStack.Screen
+            name="Camera"
+            component={Camera}
+          />
         </RootStack.Navigator>
       </NavigationContainer>
     </Provider>
