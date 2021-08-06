@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:548531888383:android:f84440bef5294005dbecca",
         "android_client_info": {
-          "package_name": "com.mainapp"
+          "package_name": "com.programmingwithmash.todolist"
         }
       },
       "oauth_client": [

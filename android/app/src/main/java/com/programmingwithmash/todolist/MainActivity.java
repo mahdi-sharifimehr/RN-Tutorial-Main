@@ -1,4 +1,4 @@
-package com.mainapp;
+package com.programmingwithmash.todolist;
 
 import com.facebook.react.ReactActivity;
 
