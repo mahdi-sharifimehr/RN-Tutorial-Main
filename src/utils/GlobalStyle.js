@@ -1,10 +1,10 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 export default StyleSheet.create({
     CustomFontBig: {
         fontFamily: 'AbrilFatface-Regular'
     },
     CustomFontHW: {
-        fontFamily: 'IndieFlower-Regular'
+        fontFamily: Platform.OS === 'ios' ? 'IndieFlower' : 'IndieFlower-Regular'
     },
 });
