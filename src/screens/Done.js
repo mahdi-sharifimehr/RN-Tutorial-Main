@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CheckBox from '@react-native-community/checkbox';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View, FlatList, Alert } from 'react-native'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,11 +12,32 @@ export default function Done({ navigation }) {
     const { tasks } = useSelector(state => state.taskReducer);
     const dispatch = useDispatch();
 
+    const [filteredTask, setFilteredTask] = useState([]);
+
+    useEffect(() => {
+        navigation.addListener('focus', () => {
+            getTasks();
+        });
+    }, [])
+
+    const getTasks = () => {
+        AsyncStorage.getItem('Tasks')
+            .then(tasks => {
+                const parsedTasks = JSON.parse(tasks);
+                if (parsedTasks && typeof parsedTasks === 'object') {
+                    dispatch(setTasks(parsedTasks));
+                    setFilteredTask(parsedTasks.filter(task => task.Done === true));
+                }
+            })
+            .catch(err => console.log(err))
+    }
+
     const deleteTask = (id) => {
         const filteredTasks = tasks.filter(task => task.ID !== id);
         AsyncStorage.setItem('Tasks', JSON.stringify(filteredTasks))
             .then(() => {
                 dispatch(setTasks(filteredTasks));
+                setFilteredTask(filteredTasks.filter(task => task.Done === true));
                 Alert.alert('Success!', 'Task removed successfully.');
             })
             .catch(err => console.log(err))
@@ -30,6 +51,7 @@ export default function Done({ navigation }) {
             AsyncStorage.setItem('Tasks', JSON.stringify(newTasks))
                 .then(() => {
                     dispatch(setTasks(newTasks));
+                    setFilteredTask(newTasks.filter(task => task.Done === true));
                     Alert.alert('Success!', 'Task state is changed.');
                 })
                 .catch(err => console.log(err))
@@ -39,7 +61,7 @@ export default function Done({ navigation }) {
     return (
         <View style={styles.body}>
             <FlatList
-                data={tasks.filter(task => task.Done === true)}
+                data={filteredTask}
                 renderItem={({ item }) => (
                     <TouchableOpacity
                         style={styles.item}
