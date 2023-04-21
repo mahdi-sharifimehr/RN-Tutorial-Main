@@ -1,7 +1,6 @@
 # RN-Tutorial-Main
 <p>
   This repo contains all the course files for the React Native Tutorial playlist on The Programming with Mash Channel
-https://www.youtube.com/playlist?list=PL8kfZyp--gEXs4YsSLtB3KqDtdOFHMjWZ
 </p>
 <h2>Using the course files</h2>
 <p>
